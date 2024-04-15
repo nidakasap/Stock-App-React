@@ -36,6 +36,9 @@ const SignupSchema = Yup.object().shape({
     .matches(/[A-Z]+/, "Password must have an uppercase")
     .matches(/[!,?{}><%&$#£+-.]+/, " Password must have a special char")
     .required(),
+  confirmPassword: Yup.string()
+    .oneOf([Yup.ref("password"), null], "Passwords must match")
+    .required("Please confirm your password"),
 });
 
 const Register = () => {
@@ -85,7 +88,14 @@ const Register = () => {
             }}
             validationSchema={SignupSchema}
             onSubmit={(values, actions) => {
-              register(values);
+              if (values.password !== values.confirmPassword) {
+                actions.setFieldError(
+                  "confirmPassword",
+                  "Passwords do not match"
+                );
+              } else {
+                register(values);
+              }
             }}
           >
             {({
@@ -155,6 +165,22 @@ const Register = () => {
                     error={touched.password && Boolean(errors.password)}
                     helperText={touched.password && errors.password}
                   />
+                  <TextField
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    type="password"
+                    label="Confirm Password"
+                    value={values.confirmPassword}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={
+                      touched.confirmPassword && Boolean(errors.confirmPassword)
+                    }
+                    helperText={
+                      touched.confirmPassword && errors.confirmPassword
+                    }
+                  />
+
                   <Button variant="contained" type="submit">
                     Sign Up
                   </Button>
