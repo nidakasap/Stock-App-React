@@ -1,51 +1,45 @@
-import Container from "@mui/material/Container";
-import Typography from "@mui/material/Typography";
-import Avatar from "@mui/material/Avatar";
 import LockIcon from "@mui/icons-material/Lock";
-import image from "../assets/regi.avif";
+import { Box, Button, TextField } from "@mui/material";
+import Avatar from "@mui/material/Avatar";
+import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import { Form, Formik } from "formik";
 import { Link } from "react-router-dom";
-import { Box } from "@mui/material";
+import * as Yup from "yup";
+import image from "../assets/regi.avif";
 import AuthHeader from "../components/AuthHeader";
 import AuthImage from "../components/AuthImage";
-import { Formik, Form } from "formik";
-import TextField from "@mui/material/TextField";
-import * as Yup from "yup";
-import Button from "@mui/material/Button";
-import useAuthCalls from "../hooks/useAuthCall";
+import useAuthCall from "../hooks/useAuthCall";
 
 const SignupSchema = Yup.object().shape({
-  username: Yup.string().min(3).max(15).required(),
+  username: Yup.string()
+    .min(3, "Username must be at least 3 characters long.")
+    .max(15, "Username cannot exceed 15 characters.")
+    .required("Username is required."),
   firstName: Yup.string()
-    .min(2, "Too Short!")
-    .max(50, "Too Long!")
-    .required("Required"),
+    .min(2, "First name must be at least 2 characters long.")
+    .max(50, "First name cannot exceed 50 characters.")
+    .required("First name is required."),
   lastName: Yup.string()
-    .min(2, "Too Short!")
-    .max(50, "Too Long!")
-    .required("Required"),
-  email: Yup.string().email("Invalid email").required("Required"),
+    .min(2, "Last name must be at least 2 characters long.")
+    .max(50, "Last name cannot exceed 50 characters.")
+    .required("Last name is required."),
+  email: Yup.string()
+    .email("Please enter a valid email address.")
+    .required("Email is required."),
   password: Yup.string()
-    .matches(
-      /^(?=.*[A-Z])/,
-      "Password must contain at least one uppercase letter"
-    )
-    .matches(
-      /^(?=.*[a-z])/,
-      "Password must contain at least one lowercase letter"
-    )
-    .matches(/^(?=.*\d)/, "Password must contain at least one number")
-    .matches(
-      /^(?=.*[!@#$%^&*])/,
-      "Password must contain at least one special character"
-    )
-    .min(6, "Password must be at least 6 characters")
-    .max(30, "Password must be at most 20 characters")
-    .required("Password is required"),
+    .min(8, "Password must have min 8 chars")
+    .max(16, "Password must have max 16 chars")
+    .matches(/\d+/, "Password must have a number")
+    .matches(/[a-z]+/, "Password must have a lowercase")
+    .matches(/[A-Z]+/, "Password must have an uppercase")
+    .matches(/[!,?{}><%&$#£+-.]+/, " Password must have a special char")
+    .required(),
 });
 
 const Register = () => {
-  const { register } = useAuthCalls();
+  const { register } = useAuthCall();
 
   return (
     <Container maxWidth="lg">
@@ -72,7 +66,6 @@ const Register = () => {
           >
             <LockIcon size="30" />
           </Avatar>
-
           <Typography
             variant="h4"
             align="center"
@@ -92,7 +85,6 @@ const Register = () => {
             }}
             validationSchema={SignupSchema}
             onSubmit={(values, actions) => {
-              actions.resetForm();
               register(values);
             }}
           >
@@ -107,23 +99,23 @@ const Register = () => {
             }) => (
               <Form>
                 <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-                  {" "}
                   <TextField
-                    fullWidth
                     id="username"
                     name="username"
-                    label="username"
+                    label="Username"
                     value={values.username}
                     onChange={handleChange}
+                    inputProps={{
+                      "auto-complete": "off",
+                    }}
                     onBlur={handleBlur}
                     error={touched.username && Boolean(errors.username)}
                     helperText={touched.username && errors.username}
                   />
                   <TextField
-                    fullWidth
                     id="firstName"
                     name="firstName"
-                    label="First name"
+                    label="FirstName"
                     value={values.firstName}
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -131,21 +123,21 @@ const Register = () => {
                     helperText={touched.firstName && errors.firstName}
                   />
                   <TextField
-                    fullWidth
                     id="lastName"
                     name="lastName"
-                    label="Last name"
+                    label="LastName"
                     value={values.lastName}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     error={touched.lastName && Boolean(errors.lastName)}
                     helperText={touched.lastName && errors.lastName}
                   />
+
                   <TextField
-                    fullWidth
                     id="email"
                     name="email"
                     label="Email"
+                    type="email"
                     value={values.email}
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -153,7 +145,6 @@ const Register = () => {
                     helperText={touched.email && errors.email}
                   />
                   <TextField
-                    fullWidth
                     id="password"
                     name="password"
                     type="password"
@@ -165,14 +156,16 @@ const Register = () => {
                     helperText={touched.password && errors.password}
                   />
                   <Button variant="contained" type="submit">
-                    Submit
+                    Sign Up
                   </Button>
                 </Box>
               </Form>
             )}
           </Formik>
 
-          <Link to="/">Already have an account? Sign in</Link>
+          <Box sx={{ textAlign: "center", mt: 2, color: "secondary.main" }}>
+            <Link to="/">Already have an account? Sign in</Link>
+          </Box>
         </Grid>
 
         <AuthImage image={image} />

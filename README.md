@@ -1,5 +1,5 @@
-# Stock App 
-Yüklü Olan Paketler
+# Stock App
+
 - MUI and MUI icons
 - axios
 - redux/redux toolkit
