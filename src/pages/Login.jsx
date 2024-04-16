@@ -9,21 +9,12 @@ import { Link } from "react-router-dom";
 import AuthHeader from "../components/AuthHeader";
 import AuthImage from "../components/AuthImage";
 import useAuthCall from "../hooks/useAuthCall";
-import * as Yup from "yup";
-import { Box, Button, TextField } from "@mui/material";
-import { Form, Formik } from "formik";
+import { Box } from "@mui/material";
+import { Formik } from "formik";
+import LoginForm, { LoginSchema } from "../components/LoginForm";
 
-export const loginSchema = Yup.object().shape({
-  email: Yup.string()
-    .email("Please enter valid email")
-    .required("Email is mandatory"),
-  password: Yup.string()
-    .min(8, "Password must have min 8 chars")
-    .max(16, "Password must have max 16 chars")
-    .required("Password is mandatory"),
-});
 const Login = () => {
-  const theme = useTheme();
+  // const theme = useTheme();
   const { login } = useAuthCall();
 
   return (
@@ -60,52 +51,14 @@ const Login = () => {
               email: "",
               password: "",
             }}
-            validationSchema={loginSchema}
-            onSubmit={(values) => {
+            validationSchema={LoginSchema}
+            onSubmit={(values, actions) => {
               login(values);
+              actions.resetForm();
+              actions.setSubmitting(false);
             }}
-          >
-            {({
-              values,
-              errors,
-              touched,
-              handleChange,
-              handleBlur,
-              handleSubmit,
-              isSubmitting,
-            }) => (
-              <Form>
-                <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-                  <TextField
-                    id="email"
-                    name="email"
-                    label="Email"
-                    type="email"
-                    value={values.email}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={touched.email && Boolean(errors.email)}
-                    helperText={touched.email && errors.email}
-                  />
-                  <TextField
-                    id="password"
-                    name="password"
-                    type="password"
-                    label="Password"
-                    value={values.password}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={touched.password && Boolean(errors.password)}
-                    helperText={touched.password && errors.password}
-                  />
-                  <Button variant="contained" type="submit">
-                    Submit
-                  </Button>
-                </Box>
-              </Form>
-            )}
-          </Formik>
-
+            component={(props) => <LoginForm {...props} />}
+          ></Formik>
           <Box sx={{ textAlign: "center", mt: 2, color: "secondary.main" }}>
             <Link to="/register">Don't have an account? Sign Up</Link>
           </Box>
