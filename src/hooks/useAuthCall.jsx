@@ -2,7 +2,7 @@ import { useDispatch } from "react-redux";
 import { fetchFail, fetchStart, registerSuccess } from "../features/authSlice";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
+import { toastErrorNotify, toastSuccessNotify } from "../helper/ToastNotify";
 const useAuthCall = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -16,34 +16,37 @@ const useAuthCall = () => {
       );
       console.log(data);
       dispatch(registerSuccess(data));
+      toastSuccessNotify("Registration successful! ");
       navigate("/stock");
     } catch (error) {
       dispatch(fetchFail());
-      console.log(error);
+      toastErrorNotify("Registration failed. Please try again later.");
     }
   };
   const login = async (userInfo) => {
     dispatch(fetchStart());
     try {
-      const { data } = await axiosPublic.post(`account/auth/login/`, userInfo);
+      const { data } = await axios.post(`account/auth/login/`, userInfo);
       dispatch(loginSuccess(data));
-      toastSuccessNotify("Login basarili");
+      toastSuccessNotify("You're now logged in.");
       navigate("/stock");
     } catch (err) {
       dispatch(fetchFail());
-      toastErrorNotify("Login basarisiz");
+      toastErrorNotify(
+        "Login failed. Please check your credentials and try again."
+      );
     }
   };
   const logout = async () => {
     dispatch(fetchStart());
     try {
-      await axiosPublic.post(`account/auth/logout/`);
+      await axios.post(`account/auth/logout/`);
       dispatch(logoutSuccess());
-      toastSuccessNotify("Logout basarili");
+      toastSuccessNotify("You've been successfully logged out.");
       navigate("/");
     } catch (err) {
       dispatch(fetchFail());
-      toastErrorNotify("Logout basarili");
+      toastErrorNotify("An issue occurred. Please try again.");
     }
   };
   return { register, login, logout };

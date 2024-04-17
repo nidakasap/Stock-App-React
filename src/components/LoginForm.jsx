@@ -8,10 +8,7 @@ export const LoginSchema = Yup.object().shape({
   email: Yup.string()
     .email("Please enter valid email")
     .required("Email is required"),
-  password: Yup.string()
-    .min(8, "Password must have min 8 chars")
-    .max(16, "Password must have max 16 chars")
-    .required("Password is required"),
+  password: Yup.string().required("Password is required"),
 });
 
 const LoginForm = ({
@@ -21,7 +18,7 @@ const LoginForm = ({
   handleChange,
   handleBlur,
   handleSubmit,
-  isSubmitting,
+  loading,
 }) => {
   return (
     <div>
@@ -49,8 +46,8 @@ const LoginForm = ({
             error={touched.password && Boolean(errors.password)}
             helperText={touched.password && errors.password}
           />
-          <Button variant="contained" type="submit">
-            Submit
+          <Button variant="contained" type="submit" disabled={loading}>
+            Login
           </Button>
         </Box>
       </Form>
