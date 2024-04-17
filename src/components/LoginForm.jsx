@@ -3,6 +3,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import { Form } from "formik";
+import { useSelector } from "react-redux";
 
 export const LoginSchema = Yup.object().shape({
   email: Yup.string()
@@ -11,15 +12,8 @@ export const LoginSchema = Yup.object().shape({
   password: Yup.string().required("Password is required"),
 });
 
-const LoginForm = ({
-  values,
-  errors,
-  touched,
-  handleChange,
-  handleBlur,
-  handleSubmit,
-  loading,
-}) => {
+const LoginForm = ({ values, errors, touched, handleChange, handleBlur }) => {
+  const { loading } = useSelector((state) => state.auth);
   return (
     <div>
       <Form>
