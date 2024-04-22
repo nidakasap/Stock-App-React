@@ -7,6 +7,9 @@ import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
 import useStockCall from "../../hooks/useStockCall";
+import { Box, IconButton } from "@mui/material";
+import BusinessIcon from "@mui/icons-material/Business";
+import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 
 export default function FirmCard({
   _id,
@@ -21,48 +24,63 @@ export default function FirmCard({
   return (
     <Card
       sx={{
-        height: 390,
         display: "flex",
         flexDirection: "column",
-        justifyContent: "space-between",
         padding: "0.5rem",
       }}
     >
-      <CardContent>
-        <Typography gutterBottom variant="h5" component="div">
-          {name}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          {address}
-        </Typography>
+      <CardContent
+        sx={{
+          borderBottom: "1px solid #ccc",
+          padding: "0.5rem 1rem",
+        }}
+      >
+        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+          <Typography gutterBottom variant="h5" component="div">
+            {name}
+          </Typography>
+
+          <Box>
+            <IconButton>
+              <EditIcon
+                onClick={() => {
+                  handleOpen();
+                  setInitialState({ _id, name, phone, image, address });
+                }}
+              />
+            </IconButton>
+            <IconButton>
+              <DeleteOutlineIcon
+                onClick={() => deleteStockData("firms", _id)}
+              />
+            </IconButton>
+          </Box>
+        </Box>
       </CardContent>
+
       <CardMedia
-        sx={{ height: 140, objectFit: "contain" }}
+        sx={{ height: 150, objectFit: "contain", p: 4 }}
         component="img"
         image={image}
         title={name}
       />
-      <CardContent>
-        <Typography variant="body2" color="text.secondary">
-          Phone : {phone}
-        </Typography>
-      </CardContent>
-
-      <CardActions
+      <CardContent
         sx={{
+          display: "flex",
+          flexDirection: "column",
           justifyContent: "center",
-          alignItems: "center",
           gap: 2,
         }}
       >
-        <EditIcon
-          onClick={() => {
-            handleOpen();
-            setInitialState({ _id, name, phone, image, address });
-          }}
-        />
-        <DeleteOutlineIcon onClick={() => deleteStockData("firms", _id)} />
-      </CardActions>
+        <Typography variant="body2" color="text.secondary">
+          <BusinessIcon sx={{ fontSize: 14, mx: 0.5 }} />
+          {address}
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          <LocalPhoneIcon sx={{ fontSize: 14, mx: 0.5 }} />
+          Phone : {phone}
+        </Typography>
+      </CardContent>
     </Card>
   );
 }

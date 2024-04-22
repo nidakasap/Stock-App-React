@@ -31,8 +31,6 @@ const Firms = () => {
     address: "",
     image: "",
   });
-  // console.log("firms:", firms);
-  // console.log("firms:", initialState);
 
   useEffect(() => {
     getStockData("firms");
@@ -53,7 +51,15 @@ const Firms = () => {
       </Button>
       <Grid container spacing={2} mt={3}>
         {firms.map((firm) => (
-          <Grid item xs={12} md={6} lg={4} xl={3} key={firm._id}>
+          <Grid
+            item
+            xs={12}
+            md={6}
+            lg={4}
+            xl={3}
+            sx={{ display: "flex", alignItems: "stretch" }}
+            key={firm._id}
+          >
             <FirmCard
               {...firm}
               handleOpen={handleOpen}
