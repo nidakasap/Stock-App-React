@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from "react";
-// import {useDispatch, useSelector} from "react-redux";
-// import { fetchFail, fetchStart, firmsSuccess } from '../features/stockSlice';
-// import axios from "axios";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { useSelector } from "react-redux";
-import useStockCall from "../hooks/useStockCall";
 import FirmCard from "../components/Cards/FirmCard";
 import FirmModal from "../components/Modals/FirmModal";
+import useStockCall from "../hooks/useStockCall";
 
 const Firms = () => {
   const { getStockData } = useStockCall();
@@ -17,8 +14,26 @@ const Firms = () => {
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-  console.log("firms:", firms);
+
+  const handleClose = () => {
+    setOpen(false);
+    setInitialState({
+      name: "",
+      phone: "",
+      address: "",
+      image: "",
+    });
+  };
+
+  const [initialState, setInitialState] = useState({
+    name: "",
+    phone: "",
+    address: "",
+    image: "",
+  });
+  // console.log("firms:", firms);
+  // console.log("firms:", initialState);
+
   useEffect(() => {
     getStockData("firms");
   }, []);
@@ -39,11 +54,21 @@ const Firms = () => {
       <Grid container spacing={2} mt={3}>
         {firms.map((firm) => (
           <Grid item xs={12} md={6} lg={4} xl={3} key={firm._id}>
-            <FirmCard {...firm} handleOpen={handleOpen} />
+            <FirmCard
+              {...firm}
+              handleOpen={handleOpen}
+              setInitialState={setInitialState}
+            />
           </Grid>
         ))}
       </Grid>
-      <FirmModal open={open} handleClose={handleClose} />
+      {open && (
+        <FirmModal
+          open={open}
+          handleClose={handleClose}
+          initialState={initialState}
+        />
+      )}
     </Container>
   );
 };
