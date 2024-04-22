@@ -14,7 +14,7 @@ const useAuthCall = () => {
   const register = async (userInfo) => {
     dispatch(fetchStart());
     try {
-      const { data } = await axios.post(`${BASE_URL}users/`, userInfo);
+      const { data } = await axios.post(`${BASE_URL}/users`, userInfo);
       console.log(data);
       dispatch(registerSuccess(data));
       toastSuccessNotify("Registration successful! ");
@@ -27,7 +27,7 @@ const useAuthCall = () => {
   const login = async (userInfo) => {
     dispatch(fetchStart());
     try {
-      const { data } = await axios.post(`${BASE_URL}/auth/login/`, userInfo);
+      const { data } = await axios.post(`${BASE_URL}/auth/login`, userInfo);
       dispatch(loginSuccess(data));
       toastSuccessNotify("You're now logged in.");
       navigate("/stock");
@@ -41,7 +41,7 @@ const useAuthCall = () => {
   const logout = async () => {
     dispatch(fetchStart());
     try {
-      await axios.get(`${BASE_URL}/auth/logout/`, {
+      await axios.get(`${BASE_URL}/auth/logout`, {
         headers: {
           Authorization: `Token ${token}`,
         },
