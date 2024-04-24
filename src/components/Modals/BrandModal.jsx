@@ -22,14 +22,10 @@ export default function BrandModal({ open, handleClose, initialState }) {
   const { postStockData, putStockData } = useStockCall();
 
   const handleChange = (e) => {
-    console.log(e.target.id);
-    console.log(e.target.name);
     setInfo({ ...info, [e.target.name]: e.target.value });
   };
-  console.log(info);
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("submit", info);
 
     if (info._id) {
       putStockData("brands", info);

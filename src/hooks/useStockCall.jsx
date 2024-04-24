@@ -13,7 +13,6 @@ const useStockCall = () => {
       const { data } = await axiosWithToken(`/${url}`);
       dispatch(getSuccess({ data: data.data, url }));
     } catch (error) {
-      console.log(error);
       dispatch(fetchFail());
     }
   };
