@@ -9,7 +9,7 @@ import {
   REGISTER,
   REHYDRATE,
 } from "redux-persist";
-import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
+import storage from "redux-persist/lib/storage";
 import authReducer from "../features/authSlice";
 import stockReducer from "../features/stockSlice";
 

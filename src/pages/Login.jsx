@@ -1,50 +1,50 @@
-import { useTheme } from "@mui/material";
+import LockIcon from "@mui/icons-material/Lock";
+import Avatar from "@mui/material/Avatar";
+import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import image from "../assets/login.png";
-import { Link } from "react-router-dom";
-import AuthHeader from "../components/AuthHeader";
-import AuthImage from "../components/AuthImage";
-import useAuthCall from "../hooks/useAuthCall";
-import { Box } from "@mui/material";
 import { Formik } from "formik";
-import LoginForm, { LoginSchema } from "../components/LoginForm";
+import { Link } from "react-router-dom";
+import image from "../assets/hero.png";
+import AuthHeader from "../components/Commons/AuthHeader";
+import AuthImage from "../components/Commons/AuthImage";
+import LoginForm, { loginScheme } from "../components/Forms/LoginForm";
+import useAuthCall from "../hooks/useAuthCall";
 
 const Login = () => {
-  // const theme = useTheme();
   const { login } = useAuthCall();
-
   return (
     <Container maxWidth="lg">
       <Grid
         container
         justifyContent="center"
-        alignItems="center"
-        rowSpacing={{ sm: 3 }}
+        direction="row-reverse"
         sx={{
-          height: "90vh",
+          height: "100vh",
           p: 2,
         }}
       >
         <AuthHeader />
-        <AuthImage image={image} />
+
         <Grid item xs={12} sm={10} md={6}>
-          <Typography
-            variant="h4"
-            align="center"
-            mb={2}
-            color="secondary.light"
+          <Avatar
+            sx={{
+              backgroundColor: "secondary.main",
+              m: "auto",
+              width: 40,
+              height: 40,
+            }}
           >
-            Welcome Back!
+            <LockIcon size="30" />
+          </Avatar>
+          <Typography variant="h4" align="center" mb={4} color="secondary.main">
+            SIGN IN
           </Typography>
 
           <Formik
-            initialValues={{
-              email: "",
-              password: "",
-            }}
-            validationSchema={LoginSchema}
+            initialValues={{ email: "", password: "" }}
+            validationSchema={loginScheme}
             onSubmit={(values, actions) => {
               login(values);
               actions.resetForm();
@@ -53,11 +53,11 @@ const Login = () => {
             component={(props) => <LoginForm {...props} />}
           ></Formik>
           <Box sx={{ textAlign: "center", mt: 2, color: "secondary.main" }}>
-            <Link style={{ textDecoration: "none" }} to="/register">
-              Don't have an account? Sign Up
-            </Link>
+            <Link to="/register">Don't have an account? Sign Up</Link>
           </Box>
         </Grid>
+
+        <AuthImage image={image} />
       </Grid>
     </Container>
   );

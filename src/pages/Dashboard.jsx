@@ -1,5 +1,4 @@
 import LogoutIcon from "@mui/icons-material/Logout";
-import MailIcon from "@mui/icons-material/Mail";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Button } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
@@ -12,7 +11,7 @@ import Typography from "@mui/material/Typography";
 import * as React from "react";
 import { Outlet } from "react-router-dom";
 import useAuthCall from "../hooks/useAuthCall";
-import MenuListItems from "../components/MenuListItems";
+import MenuListItems from "../components/Navigation/MenuListItems";
 
 const drawerWidth = 240;
 
@@ -43,7 +42,6 @@ function Dashboard(props) {
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-
       <AppBar
         position="fixed"
         sx={{
@@ -81,13 +79,11 @@ function Dashboard(props) {
           </Button>
         </Toolbar>
       </AppBar>
-
       <Box
         component="nav"
         sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
         aria-label="mailbox folders"
       >
-        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
         <Drawer
           container={container}
           variant="temporary"
@@ -95,7 +91,7 @@ function Dashboard(props) {
           onTransitionEnd={handleDrawerTransitionEnd}
           onClose={handleDrawerClose}
           ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
+            keepMounted: true,
           }}
           sx={{
             display: { xs: "block", sm: "none" },
@@ -121,7 +117,6 @@ function Dashboard(props) {
           <MenuListItems />
         </Drawer>
       </Box>
-
       <Box
         component="main"
         sx={{

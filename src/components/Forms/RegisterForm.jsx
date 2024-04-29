@@ -1,36 +1,31 @@
-import * as Yup from "yup";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import { Form } from "formik";
+import * as Yup from "yup";
 
 export const SignupSchema = Yup.object().shape({
-  username: Yup.string()
-    .min(3, "This field must be at least 3 characters long")
-    .max(15, "This field can be at most 15 characters long")
-    .required("Username is required"),
+  username: Yup.string().min(3).max(15).required("Required!"),
   firstName: Yup.string()
-    .min(2, "This field must be at least 2 characters long")
-    .max(50, "This field can be at most 50 characters long")
-    .required("First name is required"),
+    .min(2, "Too Short!")
+    .max(50, "Too Long!")
+    .required("Required"),
   lastName: Yup.string()
-    .min(2, "This field must be at least 2 characters long")
-    .max(50, "This field can be at most 50 characters long")
-    .required("Last name is required"),
-  email: Yup.string()
-    .email("Invalid email address")
-    .required("Email is required"),
+    .min(2, "Too Short!")
+    .max(50, "Too Long!")
+    .required("Required"),
+  email: Yup.string().email("Invalid email").required("Required"),
   password: Yup.string()
-    .min(8, "Password must be at least 8 characters long")
-    .max(50, "Password can be at most 50 characters long")
-    .matches(/\d+/, "Password must contain at least one digit")
-    .matches(/[a-z]/, "Password must contain at least one lowercase letter")
-    .matches(/[A-Z]/, "Password must contain at least one uppercase letter")
+    .min(8, "Er muss mindestens 8 Zeichen lang sein!")
+    .max(50, "Er darf maximal 50 Zeichen lang sein!")
+    .matches(/\d+/, "Muss mindestens eine Ziffer enthalten!")
+    .matches(/[a-z]/, "Muss mindestens einen Kleinbuchstaben enthalten!")
+    .matches(/[A-Z]/, "Muss mindestens einen Großbuchstaben enthalten!")
     .matches(
       /[@$?!%&*]+/,
-      "Password must contain at least one special character (@$?!%&*)"
+      "Muss mindestens ein Sonderzeichen (@$!%*?&) enthalten!"
     )
-    .required("Password is required"),
+    .required(),
 });
 
 const SignUpForm = ({
@@ -55,9 +50,8 @@ const SignUpForm = ({
             value={values.username}
             onChange={handleChange}
             onBlur={handleBlur}
-            helperText={touched.username && errors.username} // To display validation messages, capture messages from 'errors'.
-            error={touched.username && Boolean(errors.username)} // 'error' attribute expects a boolean value, so convert it for better consistency.
-            // 'touched' indicates whether the user has interacted with the input field.
+            helperText={touched.username && errors.username}
+            error={touched.username && Boolean(errors.username)}
           />
           <TextField
             label="First Name"
@@ -117,7 +111,7 @@ const SignUpForm = ({
             size="large"
             disabled={isSubmitting}
           >
-            Sign Up
+            {isSubmitting ? "Loading..." : "Sign Up"}
           </Button>
         </Box>
       </Form>

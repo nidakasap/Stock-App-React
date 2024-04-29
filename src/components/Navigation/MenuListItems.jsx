@@ -13,7 +13,6 @@ const links = [
   {
     title: "Dashboard",
     url: "/stock",
-    // icon:"/assets/navbar/ic_analytics.svg"
     icon: icon("ic_analytics"),
   },
   {
@@ -47,17 +46,16 @@ const iconStyle = {
   color: "secondary.main",
   borderRadius: "1rem",
   "&:hover": {
-    backgroundColor: "primary.second",
+    backgroundColor: "secondary.main",
     color: "white",
   },
 };
-
 const selectedStyle = {
   backgroundColor: "secondary.second",
   borderRadius: "1rem",
   "&:hover": {
-    backgroundColor: "secondary.second",
-    color: "white",
+    backgroundColor: "secondary.main",
+    color: "secondary.second",
   },
   color: "white",
 };
@@ -65,16 +63,29 @@ const selectedStyle = {
 const MenuListItems = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
+  console.log(pathname);
   return (
     <div>
       <Toolbar />
       <List>
         {links.map((item, index) => (
-          <ListItem key={item.title} disablePadding sx={{ p: 0.5 }}>
+          <ListItem key={item.title} disablePadding>
             <ListItemButton
               onClick={() => navigate(item.url)}
               sx={pathname == item.url ? selectedStyle : iconStyle}
             >
+              {/* <Box
+                sx={{
+                  backgroundImage: `url(${item.icon})`,
+                  backgroundPosition: "center",
+                  backgroundSize: "cover",
+                  backgroundRepeat: "no-repeat",
+                  width: 48,
+                  height: 48,
+                  backgroundColor: "red",
+                }}
+              /> */}
+
               <Box
                 sx={{
                   width: 24,
