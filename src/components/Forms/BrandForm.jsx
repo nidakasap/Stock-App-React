@@ -25,14 +25,18 @@ export default function BrandForm({ open, handleClose, initialState }) {
 
   return (
     <Box component="form" onSubmit={handleSubmit} sx={flexColumn}>
-      {brandFields.map((item) => (
-        <MyTextField
-          onChange={handleChange}
-          key={item.id}
-          value={info[item.id]}
-          {...item}
-        />
-      ))}
+      {brandFields.map((item) => {
+        console.log("halo", item, item.id);
+
+        return (
+          <MyTextField
+            onChange={handleChange}
+            key={item.id}
+            value={info[item.id]}
+            {...item}
+          />
+        );
+      })}
       <MyButton
         type="submit"
         variant="contained"
